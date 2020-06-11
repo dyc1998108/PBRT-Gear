@@ -1,5 +1,5 @@
 {
-  "name": "upload-gear",
+  "name": "pbrt-gear",
   "label": "Upload gear: upload files",
   "description": "This gear upload files to a specific acquisition of a specific project.",
   "version": "0.1.0",
@@ -7,8 +7,8 @@
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
   "license": "Apache-2.0",
-  "url": "https://github.com/dyc1998108/UploadGear",
-  "source": "https://github.com/dyc1998108/UploadGear",
+  "url": "https://github.com/dyc1998108/PBRT-Gear",
+  "source": "https://github.com/dyc1998108/PBRT-Gear",
   "environment": {
     "FLYWHEEL": "/flywheel/v0"
   },
@@ -18,7 +18,7 @@
       "image": "veckiina/pbrt-v3-spectral:newLatestTest"
     },
     "flywheel": {
-      "suite": "Flywheel Training Gears"
+      "suite": "PBRT Gear"
     }
   },
   "inputs": {
