@@ -1,0 +1,42 @@
+{
+  "name": "upload-gear",
+  "label": "Upload gear: upload files",
+  "description": "This gear upload files to a specific acquisition of a specific project.",
+  "version": "0.1.0",
+  "author": "Yichao Deng",
+  "maintainer": "Yichao Deng",
+  "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
+  "license": "Apache-2.0",
+  "url": "https://github.com/dyc1998108/UploadGear",
+  "source": "https://github.com/dyc1998108/UploadGear",
+  "environment": {
+    "FLYWHEEL": "/flywheel/v0"
+  },
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "veckiina/pbrt-v3-spectral:newLatestTest"
+    },
+    "flywheel": {
+      "suite": "Flywheel Training Gears"
+    }
+  },
+  "inputs": {
+    "files": {
+      "description": "One text file in which detailed acquisitions' path are listed.",
+      "base": "file",
+      "type": {
+        "enum": [
+		  "text"
+        ]
+      }
+    }
+  },
+  "config": {
+    "user_id": {
+      "description": "Please enter your user id to get access to the flywheel.",
+      "type": "string"
+    }
+  },
+  "command": "python3 run.py"
+}
