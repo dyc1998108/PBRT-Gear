@@ -93,10 +93,11 @@ try:
                 upload_files = listall("result",'')
 
                 # 5. Uploading files.
-                print('Uploading files...')
+                print('Putting files into output...')
                 for f in upload_files:
                     print('\t%s...' % (f))
-                    tmp.upload_file(f)
+                    # tmp.upload_file(f)     # this line originally committed fot uploading result directly.
+                    shutil.copy(f, 'output')
                     os.remove(f)
                 print('Done!')
 
