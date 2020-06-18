@@ -97,7 +97,7 @@ try:
                 for f in upload_files:
                     print('\t%s...' % (f))
                     # tmp.upload_file(f)     # this line originally committed fot uploading result directly.
-                    shutil.copy(f, 'output')
+                    shutil.copy(f, context.output_dir)
                     os.remove(f)
                 print('Done!')
 
