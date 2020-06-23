@@ -23,7 +23,7 @@ def listall(root, path):
 
 acquisition = fw.lookup('wandell/Graphics test/image alignment/city3_14:17_v10.0_f74.04left_o270.00_201962618446/pos_5000_5000_5000')
 try:
-    os.mkdir('temporary')
+#     os.mkdir('temporary')
 #   This part of code shouldn't be run since we have already put these files under city3 in this repository, use them instead.
 #     i = 0
 #     for file in acquisition.files:
