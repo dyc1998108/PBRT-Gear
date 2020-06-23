@@ -1,0 +1,51 @@
+# PBRT file created with piWrite on 2020/4/27 21:41:15.35 
+# PBRT version = 3 
+
+ActiveTransform StartTime 
+Translate 0 0 0 
+Rotate 0.000000 0.000000 0.000000 1.000000 
+Rotate 0.000000 0.000000 1.000000 0.000000 
+Rotate 0.000000 1.000000 0.000000 0.000000 
+ActiveTransform EndTime 
+Translate 0.00 0.00 -10.77 
+Rotate 0.000000 0.000000 0.000000 1.000000 
+Rotate 0.000000 0.000000 1.000000 0.000000 
+Rotate 0.000000 1.000000 0.000000 0.000000 
+ActiveTransform All 
+LookAt -4.373639 7.579690 79.040000 -34.373639 7.479690 79.040000 0.000000 1.000000 0.000000 
+
+# camera 
+Camera "realistic" 
+  "string lensfile" "lens/wide.56deg.3.0mm.dat" 
+  "float aperturediameter" [0.435000] 
+  "float focusdistance" [10.000000] 
+  "float shutteropen" [0.000000] 
+  "float shutterclose" [0.016667] 
+  "bool noweighting" "true" 
+
+# sampler 
+Sampler "stratified" 
+  "bool jitter" "false" 
+  "integer xsamples" [1] 
+  "integer ysamples" [1] 
+
+# film 
+Film "image" 
+  "integer xresolution" [1280] 
+  "integer yresolution" [720] 
+  "float diagonal" [6.610000] 
+  "string datatype" "depth" 
+
+# filter 
+PixelFilter "box" 
+  "float xwidth" [0.500000] 
+  "float ywidth" [0.500000] 
+
+# integrator 
+Integrator "metadata" 
+  "string strategy" "depth" 
+
+WorldBegin 
+Include "city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_depth_materials.pbrt" 
+Include "city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_depth_geometry.pbrt" 
+WorldEnd 

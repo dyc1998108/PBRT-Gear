@@ -1,0 +1,49 @@
+# PBRT file created with piWrite on 2020/4/27 21:41:7.44 
+# PBRT version = 3 
+
+ActiveTransform StartTime 
+Translate 0 0 0 
+Rotate 0.000000 0.000000 0.000000 1.000000 
+Rotate 0.000000 0.000000 1.000000 0.000000 
+Rotate 0.000000 1.000000 0.000000 0.000000 
+ActiveTransform EndTime 
+Translate 0.00 0.00 -10.77 
+Rotate 0.000000 0.000000 0.000000 1.000000 
+Rotate 0.000000 0.000000 1.000000 0.000000 
+Rotate 0.000000 1.000000 0.000000 0.000000 
+ActiveTransform All 
+LookAt -4.373639 7.579690 79.040000 -34.373639 7.479690 79.040000 0.000000 1.000000 0.000000 
+
+# camera 
+Camera "realistic" 
+  "string lensfile" "lens/wide.56deg.3.0mm.dat" 
+  "float aperturediameter" [0.435000] 
+  "float focusdistance" [10.000000] 
+  "float shutteropen" [0.000000] 
+  "float shutterclose" [0.016667] 
+
+# sampler 
+Sampler "sobol" 
+  "integer pixelsamples" [1024] 
+
+# film 
+Film "image" 
+  "integer xresolution" [1280] 
+  "integer yresolution" [720] 
+  "float diagonal" [6.610000] 
+
+# integrator 
+Integrator "bdpt" 
+  "integer maxdepth" [3] 
+  "string strategy" "all" 
+
+WorldBegin 
+AttributeBegin 
+Rotate 45 0 1 0 
+Rotate -90 1 0 0 
+Scale 1 1 1 
+LightSource "infinite" "string mapname" "probe_14-17_latlongmap.exr" 
+AttributeEnd 
+Include "city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_materials.pbrt" 
+Include "city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_geometry.pbrt" 
+WorldEnd 
