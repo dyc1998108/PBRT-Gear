@@ -25,31 +25,65 @@ user_id = 'stanfordlabs.flywheel.io:' + api_key
 fw = flywheel.Client(user_id)
 
 # Look up a certain acquisition
-this_acq = 'wandell/Graphics test/image alignment/city3_14:17_v10.0_f74.04left_o270.00_201962618446/pos_5000_5000_5000'
-acquisition = fw.lookup(this_acq)
+this_acq_name = 'wandell/Graphics test/image alignment/city3_14:17_v10.0_f74.04left_o270.00_201962618446/pos_5000_5000_5000'
+acquisition = fw.lookup(this_acq_name)
 
 try:
     # # This is the destination directory when running with Gear
     # dest_dir = 'temporary/'
+
     # Use another folder for local test now
-    cur_path =
-    dest_dir = ''
-    os.chdir()
-    this_json_name = 'city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_target.json'
+    cur_path = os.getcwd()
+    # This is the folder for downloads
+    dest_dir = cur_path + '/' + 'local' + '/' + 'city3'
+
+    # Create folder if not exist
+    if not os.path.isdir(dest_dir):
+        os.mkdir(dest_dir)
+
+    # for file in acquisition.files:
+    #     print(file['name'])
+    #     str = file['name']
+    #     # # The line below is necessary only if you are running on Windows.
+    #     # # However, I suggest not deleting it this time.
+    #     # new = str.replace(':', '_')
+    #     acquisition.download_file(r'%s' % str, r'%s/%s' % (dest_dir, str))
+
+    # Change to destination directory
+    os.chdir(dest_dir)
+
+    # Specify the target json file that contains the instance id list
+    this_json_name = 'city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_target.json'
     fp = open(this_json_name, 'r', encoding='utf8')
     js = json.load(fp)
+
+    # Parse the id list
+    # Target has id-filename pairs
     targets = js['fwAPI']['InfoList'].split(' ')
+
+    # Already switch to destination folder
     root = os.getcwd()
+
+    # Create folders
     os.mkdir('scene/')
     os.mkdir('scene/PBRT/')
     os.mkdir('scene/PBRT/pbrt-geometry')
+    os.mkdir('textures/')
+
+    # Loop through target elements
     for i in range(len(targets)):
+
         target = targets[i]
         print(target)
+
+        # If current target is a file id, download.
         if not target.endswith('.zip') and not target.endswith('.exr'):
             tmp = fw.get(target)
+
+            # Get the file name
             file_name = targets[i + 1]
             tmp.download_file(file_name, file_name)
+
             try:
                 if file_name == 'data.zip':
                     print('Is data.zip')
@@ -58,7 +92,7 @@ try:
                     zip.close()
                 # I'm not sure whether this part is necessary, since I notice that in 5000.pbrt,
                 # .exr will only be used in root dir.
-                if file_name.endswith('.exr'):
+                elif file_name.endswith('.exr'):
                     shutil.copy(file_name, 'scene/PBRT/pbrt-geometry')
                 else:
                     os.mkdir('%s' % file_name[:-4])
@@ -69,7 +103,6 @@ try:
                     for i in os.listdir(os.getcwd()):
                         shutil.copy(i, root + '/scene/PBRT/pbrt-geometry')
                     os.chdir(root)
-                    os.mkdir('%s' % file_name[:-4])
                     zip = zipfile.ZipFile(file_name)
                     zip.extractall(path=file_name[:-4])
                     zip.close()
@@ -83,17 +116,13 @@ try:
                 elif os.path.exists('%s' % file_name[:-4]):
                     os.remove(file_name)
                     shutil.rmtree('%s' % file_name[:-4])
-    root = 'temporary'
-    os.chdir(root)
+
+finally:
     os.mkdir('result')
     os.mkdir('result/renderings')
-    output_file = 'result/renderings/city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.dat'
-    curr_file = os.path.abspath('city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.pbrt')
-    render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
-    os.system(render_command)
-finally:
-    os.chdir('/flywheel/v0/')
-    if os.path.exists('temporary'):
-        print('If there is an exception raised, try again.')
-        # shutil.rmtree('temporary') # this line is used to reserve the resulting .dat file.
+    # output_file = 'result/renderings/city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.dat'
+    # curr_file = os.path.abspath('city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.pbrt')
+    # render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
+    # os.system(render_command)
+    print('Done')
 
