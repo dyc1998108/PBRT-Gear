@@ -13,17 +13,6 @@ fw = flywheel.Client(user_id)
 self = fw.get_current_user()
 ori = os.getcwd()
 
-# This function is used for listing all of the files under a specific folder, recursively.
-def listall(root, path):
-    if not os.path.isdir(os.path.join(path,root)):
-        return [os.path.join(path,root)]
-    items = os.listdir(os.path.join(path,root))
-    all = []
-    for item in items:
-        all.extend(listall(item, os.path.join(path,root)))
-    return all
-
-
 root = 'temporary'
 try:
     # Making a temporary folder, which will be the main folder to work with, to put all of the files in a scene.
@@ -128,4 +117,4 @@ finally:
     if os.path.exists(root):
         print('If there is an exception raised, try again.')
         # deleting root for future use.
-        shutil.rmtree(root) 
+        shutil.rmtree(root)
