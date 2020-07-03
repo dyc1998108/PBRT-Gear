@@ -25,7 +25,7 @@ user_id = 'stanfordlabs.flywheel.io:' + api_key
 fw = flywheel.Client(user_id)
 
 # Look up a certain acquisition
-this_acq_name = 'wandell/Graphics test/image alignment/city3_14:17_v10.0_f74.04left_o270.00_201962618446/pos_5000_5000_5000'
+this_acq_name = 'wandell/Graphics test/scenes/suburb/city3_11:16_v12.0_f47.50front_o270.00_2019626181423_pos_163_000_000'
 acquisition = fw.lookup(this_acq_name)
 
 try:
@@ -41,19 +41,19 @@ try:
     if not os.path.isdir(dest_dir):
         os.mkdir(dest_dir)
 
-    # for file in acquisition.files:
-    #     print(file['name'])
-    #     str = file['name']
-    #     # # The line below is necessary only if you are running on Windows.
-    #     # # However, I suggest not deleting it this time.
-    #     # new = str.replace(':', '_')
-    #     acquisition.download_file(r'%s' % str, r'%s/%s' % (dest_dir, str))
+    for file in acquisition.files:
+        print(file['name'])
+        str = file['name']
+        # # The line below is necessary only if you are running on Windows.
+        # # However, I suggest not deleting it this time.
+        # new = str.replace(':', '_')
+        acquisition.download_file(r'%s' % str, r'%s/%s' % (dest_dir, str))
 
     # Change to destination directory
     os.chdir(dest_dir)
 
     # Specify the target json file that contains the instance id list
-    this_json_name = 'city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_target.json'
+    this_json_name = 'city3_11:16_v12.0_f47.50front_o270.00_2019626181423_pos_163_000_000_target.json'
     fp = open(this_json_name, 'r', encoding='utf8')
     js = json.load(fp)
 
@@ -65,6 +65,7 @@ try:
     root = os.getcwd()
 
     # Create folders
+    # ZLY: Make sure the code won't break at the places where making/checking directories
     os.mkdir('scene/')
     os.mkdir('scene/PBRT/')
     os.mkdir('scene/PBRT/pbrt-geometry')
@@ -106,10 +107,13 @@ try:
                     zip = zipfile.ZipFile(file_name)
                     zip.extractall(path=file_name[:-4])
                     zip.close()
-                    # As for textures, I just put them in a dir called textures under root.
-                    os.chdir(file_name[:-4] + '/textures')
-                    for i in os.listdir(os.getcwd()):
-                        shutil.copy(i, root + '/textures')
+
+                    # If texture folder exists change to that folder
+                    if os.path.isdir(file_name[:-4] + '/textures'):
+                        # As for textures, I just put them in a dir called textures under root.
+                        os.chdir(file_name[:-4] + '/textures')
+                        for i in os.listdir(os.getcwd()):
+                            shutil.copy(i, root + '/textures')
             finally:
                 os.chdir(root)
                 if file_name == 'data.zip': os.remove('data.zip')
@@ -118,11 +122,13 @@ try:
                     shutil.rmtree('%s' % file_name[:-4])
 
 finally:
-    os.mkdir('result')
-    os.mkdir('result/renderings')
+    if not os.path.isdir('result'):
+        os.mkdir('result')
+        os.mkdir('result/renderings')
     # output_file = 'result/renderings/city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.dat'
     # curr_file = os.path.abspath('city3_14:17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000.pbrt')
     # render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
     # os.system(render_command)
     print('Done')
+
 
