@@ -32,7 +32,7 @@ try:
     for file in acquisition.files:
         print(file['name'])
         str = file['name']
-        # Since windows don't support ':' in files' name, replace them with '_'
+        # Since windows don't support ':' in file name, replace them with '_'
         new = str.replace(':', '_')
         acquisition.download_file(r'%s' % str, r'%s' % new)
 
