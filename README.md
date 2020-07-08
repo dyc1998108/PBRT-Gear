@@ -1,5 +1,5 @@
 # PBRT-Gear 0.2.0
-This is a simulation to run pbrt on city3. It contains downloading files and running pbrt renderings. The run.py is a Windows version while downloadAcq.py is a Mac/Linux version.
+This is a simulation to run pbrt on city3. It contains downloading files and running pbrt renderings. The run.py is a Windows version while downloadAcq.py is a Mac/Linux version. In addition, newrun.py is a more general version on Linux/Mac os.
 # How to run(for Linux/Mac version)
 Just running downloadAcq.py with python3(flywheel sdk is prerequisite). You may also have a try on newrun.py!
 # For Windows version
