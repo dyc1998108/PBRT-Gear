@@ -1,14 +1,14 @@
 {
   "name": "pbrt-gear",
-  "label": "Upload gear: upload files",
-  "description": "This gear upload files to a specific acquisition of a specific project.",
+  "label": "PBRT gear",
+  "description": "This gear don't receive any input and can be runned in an acquisition.",
   "version": "0.2.0",
   "author": "Yichao Deng",
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
   "license": "Apache-2.0",
-  "url": "https://github.com/dyc1998108/PBRT-Gear",
-  "source": "https://github.com/dyc1998108/PBRT-Gear",
+  "url": "https://github.com/dyc1998108/PBRT-Gear/tree/0.2.0",
+  "source": "https://github.com/dyc1998108/PBRT-Gear/tree/0.2.0",
   "environment": {
     "FLYWHEEL": "/flywheel/v0"
   },
@@ -18,7 +18,7 @@
       "image": "veckiina/pbrt-v3-spectral:newLatestTest"
     },
     "flywheel": {
-      "suite": "PBRT Gear"
+      "suite": "vistalab PBRT Gear"
     }
   },
   "inputs": {
