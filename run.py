@@ -2,152 +2,111 @@ import flywheel
 import os
 import zipfile
 import shutil
-import json
 
-# This run.py is just a simulation of the real situation, therefore inputs and outputs are abbreviated.
-# For a gear, it should be /flywheel/v0/
-ori = os.getcwd()
+# 0. handling user input
+context = flywheel.GearContext()  # Get the gear context
+config = context.config           # from the gear context, get the config settings
+# user_id = 'stanfordlabs.flywheel.io:' + config['user_id']
+file = open(context.get_input_path('files'), mode = 'r')
 
-# This 'root' will be our main working directory.
-root = 'temporary'
+# 1. Login Flywheel by user_id
+fw = context.client
+self = fw.get_current_user()
+print('The user now is :', self)
+print('destination is :', context.destination)
 
+# 2. handling the .txt file input.
+class FW:
+    def __init__(self, type, name, path):
+        self.type = type
+        self.name = name
+        self.path = path
+
+
+line = file.readline()
+nodes = []
+nodes.append(FW(0, line[:-1], line[:-1]))
+line = file.readline()
+while line:
+    type = line.count("\t")
+    name = line[line.count("\t"):-1]
+    i = -1
+    while nodes[i].type >= type and abs(i) <= len(nodes):
+        i -= 1
+    if abs(i) > len(nodes): path = name
+    else: path = nodes[i].path + '/' + name
+    node = FW(type, name, path)
+    nodes.append(node)
+    line = file.readline()
+
+# 3. Using the function below, we can get a list of all files in the zip file.
+# This function is used to list all files recursively.
+# it'll return a list that contains all files under a specific directory(unlike os.listdir())
+def listall(root, path):
+    if not os.path.isdir(os.path.join(path,root)):
+        return [os.path.join(path,root)]
+    items = os.listdir(os.path.join(path,root))
+    all = []
+    for item in items:
+        all.extend(listall(item, os.path.join(path,root)))
+    return all
+
+# 4. Main part.
 try:
-    # Using user api-key to get access to flywheel. One may change the api-key to get a higher authentication.
-    user_api = 'dddk2FvdSYhElu6BFK'
-    user_id = 'stanfordlabs.flywheel.io:' + user_api
-    fw = flywheel.Client(user_id)
-    self = fw.get_current_user()
+    os.mkdir("result")
+    os.mkdir("result/renderings")
+    output_dir = os.path.abspath("result")
+    # Checking the correctness of input.
+    for i in nodes:
+        try:
+            tmp = fw.lookup(i.path)
+            # print(tmp['label'])
+        except flywheel.ApiException as e:
+            print('The path: %s is illegal.' % (i.path))
+            raise
 
-    # Making a temporary folder, which will be the main folder to work with, to put all of the files in a scene.
-    # Before making the directory, check if it exists.
-    if os.path.exists(root):
-        print("Warning: Folder 'temporary' already exist. Automatically deleting it now...")
-        shutil.rmtree(root)
-    os.mkdir(root)
-    os.chdir(root)
-    root = os.path.abspath(os.getcwd())
+        # Downloading the target zipfile and unzip it into temp.
+        try:
+            if i.type == 3:
+                os.mkdir("temp")
+                tmp.download_file('%s.zip' % i.name, '%s.zip' % i.name)
+                zip = zipfile.ZipFile('%s.zip' % i.name)
+                zip.extractall(path='temp/')
+                zip.close()
+                # since os.path.abspath() will only append the current work dir with the file/folder passed,
+                # we need to change the work dir to temp.
+                # flywheel/v0/... => flywheel/v0/temp/...
+                os.chdir("temp")
 
-    # Using fw sdk to get city3 acquisition, and then downloading its files.
-    acquisition = fw.lookup('wandell/Graphics test/image alignment/city3_14:17_v10.0_f74.04left_o270.00_201962618446/pos_5000_5000_5000')
-    for file in acquisition.files:
-        print(file['name'])
-        str = file['name']
-        # Since windows don't support ':' in file name, replace them with '_'
-        new = str.replace(':', '_')
-        acquisition.download_file(r'%s' % str, r'%s' % new)
+                # find the pbrt file and starting pbrt.
+                for curr in os.listdir(os.getcwd()):
+                    if not os.path.isdir(os.path.abspath(curr)) and curr == '%s.pbrt' % i.name:
+                        root = os.path.abspath(curr)
+                        basename = os.path.split(root)[1]
+                        currName = basename
+                        output_file = os.path.join(output_dir, "renderings", currName[:-5] + ".dat")
+                        curr_file = root
+                        render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
+                        cmd = render_command
+                        print(cmd)
+                        print(os.system(cmd)) # print() is not necessary, just to make debugging more convenient.
 
-    # Due to the limitation of Windows mentioned above, all of the ':' in file name originally are replaced by '_".
-    # In addition, code are modified correspond to then alternation of file name manually(not showing there).
+                # Since result is under flywheel/v0/, we need to alter our working directory back.
+                os.chdir("/flywheel/v0/")
+                upload_files = listall("result",'')
 
-    # Using built-in function to handle json file, getting the target line.
-    pbrt_file = 'city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000_target.json'
-    fp = open(pbrt_file, 'r', encoding='utf8')
-    js = json.load(fp)
+                # 5. Uploading files.
+                print('Putting files into output...')
+                for f in upload_files:
+                    print('\t%s...' % (f))
+                    tmp.upload_file(f)     # this line originally committed fot uploading result directly.
+                    shutil.copy(f, context.output_dir)
+                    os.remove(f)
+                print('Done!')
 
-    # By split(), we can get all of the container(acquisition) id and target files' name.
-    targets = js['fwAPI']['InfoList'].split(' ')
-
-    # Making new folder to save pbrt geometry and textures for future use.
-    # Before making the directory, check if it exists.
-    if os.path.exists('scene/'):
-        print("Warning: Folder 'scene' already exists. Automatically deleting it now...")
-        shutil.rmtree('scene/')
-    os.mkdir('scene/')
-    os.mkdir('scene/PBRT/')
-    os.mkdir('scene/PBRT/pbrt-geometry')
-
-    if os.path.exists('textures/'):
-        print("Warning: Folder 'textures/' already exists. Automatically deleting it now...")
-        shutil.rmtree('textures/')
-    os.mkdir('textures/')
-
-    # Using for loop to iterate targets, then download every target files by fw sdk.
-    for i in range(len(targets)):
-        target = targets[i]
-        print(target) # For debugging.
-
-        # If a target is neither endswith zip nor endswith exr, then it should be a container id to look up.
-        if not target.endswith('.zip') and not target.endswith('.exr'):
-
-            # 'tmp' is the container to be looked up.
-            # 'file_name' is the target file to download, which can be get from target[i+1].
-            tmp = fw.get(target)
-            file_name = targets[i + 1]
-            tmp.download_file(file_name, file_name)
-
-            try:
-
-                # There are three situations:
-                # 1. target is data.zip
-                # 2. target is .exr file
-                # 3. other geometry zip files
-
-                # If target is data.zip, we just need to unzip it to the main working directory.
-                if file_name == 'data.zip':
-                    print('Is data.zip')
-                    zip = zipfile.ZipFile(file_name)
-                    zip.extractall(path=os.getcwd())
-                    zip.close()
-
-                # If target is .exr file.
-                # I'm not sure whether this part is necessary, since I notice that in 5000.pbrt,
-                # .exr will only be used in root dir.
-                elif file_name.endswith('.exr'):
-                    shutil.copy(file_name, 'scene/PBRT/pbrt-geometry')
-
-                # If target is a geometry zip file, we need to unzip it and put its geometry and textures separately.
-                else:
-                    # Building a folder to place all of the files in target zip file.
-                    os.mkdir('%s' % file_name[:-4])
-                    # Unzipping target file.
-                    zip = zipfile.ZipFile(file_name)
-                    zip.extractall(path=file_name[:-4])
-                    zip.close()
-
-                    # Copying all geometry pbrt to scene/PBRT/pbrt-geometry
-                    os.chdir(file_name[:-4] + '/scene/PBRT/pbrt-geometry')
-                    for i in os.listdir(os.getcwd()):
-                        shutil.copy(i, root + '/scene/PBRT/pbrt-geometry')
-                    os.chdir(root)
-
-                    # Copying all textures to textures/
-                    os.chdir(file_name[:-4] + '/textures')
-                    for i in os.listdir(os.getcwd()):
-                        shutil.copy(i, root + '/textures')
-                    os.chdir(root)
-
-            finally:
-                # deleting all zip files downloaded and temporary folders used for place files.
-                if file_name == 'data.zip': os.remove(file_name)
-                elif os.path.exists('%s' % file_name[:-4]):
-                    os.remove(file_name)
-                    shutil.rmtree('%s' % file_name[:-4])
-
-    # Building result/renderings for PBRT rendering.
-    # Before making the directory, check if it exists.
-    os.chdir(root)
-    if os.path.exists('result'):
-        print("Warning: Folder 'result' already exists. Automatically deleting it now...")
-        shutil.rmtree('result')
-    os.mkdir('result')
-    os.mkdir('result/renderings')
-
-    # Generating PBRT command and run it by os.system().
-    file = 'city3_14_17_v10.0_f74.04left_o270.00_201962618446_pos_5000_5000_5000'
-    output_file = 'result/renderings/%s.dat' % file
-    curr_file = os.path.abspath('%s.pbrt' % file)
-    render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
-    os.system(render_command)
-
-# Printing out the exception.
-except Exception as  e:
-    print('oops! Something went wrong there.')
-    raise e
-
+        # 6. We need to delete temp and result for future use. A "try...finally..." will always ensure it.
+        finally:
+            if os.path.exists('temp'):  shutil.rmtree('temp/')
+            if os.path.exists('%s.zip' % i.name):  os.remove('%s.zip' % i.name)
 finally:
-    # Checking whether root exist, if true then deleting it for future use.
-    # Mention here that if we delete root, all other directory we made('result', 'scene'...) will be deleted as well.
-    os.chdir(ori)
-    if os.path.exists(root):
-        print('If there is an exception raised, you may just fixed it and try again.')
-        shutil.rmtree(root)
+    if os.path.exists('result'): shutil.rmtree('result/')
