@@ -1,4 +1,0 @@
-wandell/Graphics test
-	test subject
-		test session
-			checkerboard
