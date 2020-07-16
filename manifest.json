@@ -1,42 +1,29 @@
 {
   "name": "pbrt-gear",
-  "label": "Upload gear: upload files",
-  "description": "This gear upload files to a specific acquisition of a specific project.",
-  "version": "0.1.0",
+  "label": "PBRT gear",
+  "description": "This gear don't receive any input and can be runned in an acquisition.",
+  "version": "0.2.2",
   "author": "Yichao Deng",
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
   "license": "Apache-2.0",
-  "url": "https://github.com/dyc1998108/PBRT-Gear",
-  "source": "https://github.com/dyc1998108/PBRT-Gear",
+  "url": "https://github.com/dyc1998108/PBRT-Gear/tree/0.2.2",
+  "source": "https://github.com/dyc1998108/PBRT-Gear/tree/0.2.2",
   "environment": {
     "FLYWHEEL": "/flywheel/v0"
   },
   "custom": {
     "gear-builder": {
       "category": "analysis",
-      "image": "veckiina/pbrt-v3-spectral:newLatestTest"
+      "image": "veckiina/pbrt-v3-spectral:0.2.2"
     },
     "flywheel": {
-      "suite": "PBRT Gear"
+      "suite": "vistalab PBRT Gear"
     }
   },
   "inputs": {
-    "files": {
-      "description": "One text file in which detailed acquisitions' path are listed.",
-      "base": "file",
-      "type": {
-        "enum": [
-		  "text"
-        ]
-      }
-    }
   },
   "config": {
-    "user_id": {
-      "description": "Please enter your user id to get access to the flywheel.",
-      "type": "string"
-    }
   },
-  "command": "python3 run.py"
+  "command": "python run.py"
 }
