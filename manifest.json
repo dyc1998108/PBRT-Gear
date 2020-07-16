@@ -2,7 +2,7 @@
   "name": "pbrt-gear",
   "label": "PBRT gear",
   "description": "This gear don't receive any input and can be runned in an acquisition.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Yichao Deng",
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
@@ -15,7 +15,7 @@
   "custom": {
     "gear-builder": {
       "category": "analysis",
-      "image": "veckiina/pbrt-v3-spectral:0.2.2"
+      "image": "veckiina/pbrt-v3-spectral:0.2.3"
     },
     "flywheel": {
       "suite": "vistalab PBRT Gear"
