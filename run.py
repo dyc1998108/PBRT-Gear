@@ -165,6 +165,8 @@ try:
 
         # Move the result to output directory.
         shutil.copy(output_file, context.output_dir)
+    else:
+        print('Warning: Not an acquisiton or empty. Looking at %s' % (context.destination['type']))
 
 # Printing out the exception.
 except Exception as  e:
