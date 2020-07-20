@@ -31,11 +31,9 @@ try:
     target_name = target['label']
 except Exception as e:
     print('Oops! Something wrong happens when looking up the target acquisition!')
+    print('You may just try it again.')
     print(e)
     raise
-finally:
-    print('You may just try it again.')
-
 
 try:
     # Making a temporary folder, which will be the main folder to work with, to put all of the files in a scene.
