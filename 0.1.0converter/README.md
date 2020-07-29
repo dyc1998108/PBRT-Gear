@@ -1,2 +1,2 @@
 # Converter version
-The converter version can be run both acquisitions and sessions. When running in acquisitions, it'll downloading all files in the target acquisition, run pbrt there, and then uploading the result directly under the target acquisition.\n
+The converter version can be run both acquisitions and sessions. When running in acquisitions, it'll downloading all files in the target acquisition, run pbrt there, and then uploading the result directly under the target acquisition. When running in sessions, it'll iterating all of acquisitions belong to the target session, seperatly working like above, and packaging all results to the attachment of the session(Can be found through **(select project)->(select session)->session->attachments)**)
