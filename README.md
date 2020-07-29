@@ -1,2 +1,2 @@
 # PBRT-Gear
-There are 3 different version:utility, converter, analysis. Please refer to each version for more information.
+There are 3 different versions:utility, converter, analysis. Please refer to each version for more information.
