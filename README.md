@@ -1,2 +1,2 @@
 # PBRT-Gear
-A gear used for running PBRT on flywheel.
+There are 3 different version:utility, converter, analysis. Please refer to each version for more information.
