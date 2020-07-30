@@ -11,7 +11,7 @@ gear.print_details()
 # This part is used for testing analysis gear
 session = fw.lookup('wandell/Graphics test/scenes/suburb') # Change what you want to test.
 print(session)
-# Same as above, nothing there.
+# We don't need any input, so nothing there.
 inputs = {}
 config = {}
 # 'analysis_id' could be change as well.
