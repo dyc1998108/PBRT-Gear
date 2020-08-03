@@ -175,13 +175,15 @@ try:
                     render_command = '/pbrt/pbrt-v3-spectral/build/pbrt --outfile %s %s' % (output_file, curr_file)
                     os.system(render_command)
 
-            # Now we get all outputs in result/renderings, so packaging them into a zipfile and copy it to output_dir.
-            result = zipfile.ZipFile('%s.zip' % pbrt, 'w')
-            for output in outputs:
-                result.write(output)
-            # Move the result to output directory. Here shutil.copy() can't receive zipfile(result) as parameter.
+            # Using shutil to make a archive, then copying it to output dir.
+            result = shutil.make_archive(pbrt, 'zip', 'result/renderings')
             shutil.copy('%s.zip' % pbrt, context.output_dir)
-            result.close()
+            # # Now we get all outputs in result/renderings, so packaging them into a zipfile and copy it to output_dir.
+            # result = zipfile.ZipFile('%s.zip' % pbrt, 'w', zipfile.ZIP_DEFLATED)
+            # for output in outputs:
+            #     result.write(output)
+            # # Move the result to output directory. Here shutil.copy() can't receive zipfile(result) as parameter.
+            # result.close()
 
 # Printing out the exception.
 except Exception as  e:
