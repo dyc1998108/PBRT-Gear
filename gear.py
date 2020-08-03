@@ -1,6 +1,6 @@
 import flywheel
 
-user_id = 'stanfordlabs.flywheel.io:R8A5uq2z1xyOmpB69j'
+user_id = ''
 fw = flywheel.Client(user_id)
 gear = fw.lookup('gears/pbrt-gear-utility/0.2.2')
 gear.print_details()
