@@ -1,8 +1,8 @@
 import flywheel
 
-user_id = 'stanfordlabs.flywheel.io:dddk2FvdSYhElu6BFK'
+user_id = 'stanfordlabs.flywheel.io:R8A5uq2z1xyOmpB69j'
 fw = flywheel.Client(user_id)
-gear = fw.lookup('gears/pbrt-gear/0.2.3.1.3')
+gear = fw.lookup('gears/pbrt-gear-utility/0.1.0')
 gear.print_details()
 
 # session = fw.lookup('wandell/Graphics test/scenes/suburb')
@@ -14,5 +14,5 @@ gear.print_details()
 # To simulate a batch, run this part
 session = fw.lookup('wandell/Graphics test/scenes/suburb')
 t1_acquisitions = session.acquisitions()
-proposal = gear.propose_batch(t1_acquisitions, config={})
+proposal = gear.propose_batch(t1_acquisitions[:3], config={})
 jobs = proposal.run()
