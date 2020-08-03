@@ -1,0 +1,32 @@
+{
+  "name": "pbrt-gear-analysis",
+  "label": "PBRT gear-analysis verison",
+  "description": "This gear don't receive any input and can be runned in an acquisition.",
+  "version": "0.1.0",
+  "author": "Yichao Deng",
+  "maintainer": "Yichao Deng",
+  "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
+  "license": "Apache-2.0",
+  "url": "https://github.com/dyc1998108/PBRT-Gear",
+  "source": "https://github.com/dyc1998108/PBRT-Gear",
+  "environment": {
+    "FLYWHEEL": "/flywheel/v0"
+  },
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "veckiina/pbrt-v3-spectral:0.1.0a"
+    },
+    "flywheel": {
+      "suite": "vistalab PBRT Gear-analysis"
+    }
+  },
+  "inputs": {
+		"api-key": {
+		"base": "api-key"
+    }
+  },
+  "config": {
+  },
+  "command": "python3 run.py"
+}
