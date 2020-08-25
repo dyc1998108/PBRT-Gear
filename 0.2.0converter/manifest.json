@@ -2,7 +2,7 @@
   "name": "pbrt-gear-converter",
   "label": "PBRT gear-converter verison",
   "description": "This gear don't receive any input. For more details, please refer to the source link.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Yichao Deng",
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
@@ -15,7 +15,7 @@
   "custom": {
     "gear-builder": {
       "category": "converter",
-      "image": "veckiina/pbrt-v3-spectral:0.2.1c"
+      "image": "veckiina/pbrt-v3-spectral:0.2.2c"
     },
     "flywheel": {
       "suite": "vistalab PBRT Gear-converter"
