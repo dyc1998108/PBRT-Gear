@@ -1,8 +1,8 @@
 {
-  "name": "pbrt-gear-converter",
-  "label": "PBRT gear-converter verison",
-  "description": "This gear don't receive any input. For more details, please refer to the source link.",
-  "version": "0.2.4",
+  "name": "pbrt-gear-converter-flag",
+  "label": "PBRT gear-converter-flag verison",
+  "description": "This gear don't need any manual input. For more details, please refer to the source link.",
+  "version": "0.3.1",
   "author": "Yichao Deng",
   "maintainer": "Yichao Deng",
   "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
@@ -15,7 +15,7 @@
   "custom": {
     "gear-builder": {
       "category": "converter",
-      "image": "veckiina/pbrt-v3-spectral:0.2.4c"
+      "image": "veckiina/pbrt-v3-spectral:0.3.1cf"
     },
     "flywheel": {
       "suite": "vistalab PBRT Gear-converter"
@@ -24,7 +24,17 @@
   "inputs": {
 	"api-key": {
 		"base": "api-key"
-    }
+    },
+	"flag":{
+		"description": "This is just used for distinguish session and acquisition",
+		"base": "file",
+		"type": {
+			"enum": [
+				"source code",
+				"archive"
+			]
+		}
+	}
   },
   "config": {
   },

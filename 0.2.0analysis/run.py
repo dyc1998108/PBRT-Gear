@@ -154,6 +154,16 @@ try:
                                 os.remove(file_name)
                                 shutil.rmtree('%s' % file_name[:-4])
 
+            # To handle on simple scene, just extract the zip file for later PBRT rendering.
+            else:
+                zip_file = '%s.zip' % acquisition['label']
+                # Maybe sometime a problematic acquisition is passed, so add this line to confirm.
+                assert os.path.exists(zip_file), 'Not a simple scene with zip file or a complicated one with json file.'
+                if os.path.exists(zip_file):
+                    zip = zipfile.ZipFile(zip_file)
+                    zip.extractall(path=os.getcwd())
+                    zip.close()
+
             # Building result/renderings for PBRT rendering.
             # Before making the directory, check if it exists.
             os.chdir(root)
@@ -169,7 +179,7 @@ try:
             pbrt = '%s' % acquisition['label']
             mesh = pbrt + '_mesh'
             depth = pbrt + '_depth'
-            light = pbrt + '_light'
+            light = pbrt + '_lights'
             files = [pbrt, mesh, depth, light]
             for file in files:
                 if os.path.exists('%s.pbrt' % file):
