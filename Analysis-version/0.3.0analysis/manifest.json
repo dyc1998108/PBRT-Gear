@@ -1,0 +1,47 @@
+{
+  "name": "pbrt-gear-analysis",
+  "label": "PBRT gear-analysis verison",
+  "description": "This gear don't receive any input. For more details, please refer to the source link.",
+  "version": "0.3.2",
+  "author": "Yichao Deng",
+  "maintainer": "Yichao Deng",
+  "cite": "https://github.com/vistalab/docker/tree/flywheel/utils/pbrtv3/flywheel",
+  "license": "Apache-2.0",
+  "url": "https://github.com/dyc1998108/PBRT-Gear",
+  "source": "https://github.com/dyc1998108/PBRT-Gear",
+  "environment": {
+    "FLYWHEEL": "/flywheel/v0"
+  },
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "veckiina/pbrt-v3-spectral:0.3.2a"
+    },
+    "flywheel": {
+      "suite": "vistalab PBRT Gear-analysis"
+    }
+  },
+  "inputs": {
+	"api-key": {
+		"base": "api-key"
+    }
+  },
+  "config": {
+  	"scene_type":{
+		"description": "Whether the scene is a 'complicate' one or just a 'simple' one. You can just leave it blank if no necessary type should be restricted",
+		"type": "string",
+		"default": "No specific type"
+	},
+	"keyword": {
+		"description": "Maybe you want to use a keyword as filter? You can also just leave it blank as well.",
+		"type": "string",
+		"default": "No keyword"
+	},
+	"pbrt_select":{
+		"description": "Among [radiance, depth, mesh], which do you want to run? Using ',' to seperate like 'radiance,mesh'(no whitespace).",
+		"type": "string",
+		"default": "No specific pbrt"
+	}
+  },
+  "command": "python3 run.py"
+}

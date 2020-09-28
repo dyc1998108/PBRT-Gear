@@ -176,8 +176,7 @@ try:
             pbrt = '%s' % acquisition['label']
             mesh = pbrt + '_mesh'
             depth = pbrt + '_depth'
-            light = pbrt + '_lights'
-            files = [pbrt, mesh, depth, light]
+            files = [pbrt, mesh, depth]
             outputs = []
             for file in files:
                 if os.path.exists('%s.pbrt' % file):

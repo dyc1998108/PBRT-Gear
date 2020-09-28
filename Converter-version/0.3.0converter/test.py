@@ -5,17 +5,17 @@ user_id = ''
 fw = flywheel.Client(user_id)
 
 # Get the Flywheel Example Utility gear
-gear = fw.lookup('gears/pbrt-gear-converter/0.1.0')
+gear = fw.lookup('gears/pbrt-gear-converter/0.3.3')
 gear.print_details()
 
 # 1. This part is used for testing converter gear with single acquisition.
 # Here I just use city3 as an example.
-acquisition = fw.lookup('wandell/Graphics test/scenes/single scene/city3_11:16_v12.0_f47.50front_o270.00_2019626181423_pos_163_000_000')
+acquisition = fw.lookup('wandell/Graphics test/batchtest/batchtest/suburb_9-30_v0.0_f40.00front_o270.00_20205885756')
 # Since our gear don't receive any input and config, nothing will be include in these two parameters.
 inputs = {}
 config = {}
 # here 'tags' could be change to anything you like.
-job_id = gear.run(config=config, inputs=inputs, destination=acquisition, tags=['city3_converter'])
+job_id = gear.run(config=config, inputs=inputs, destination=acquisition, tags=['converter_0.3.3'])
 
 # 2. To simulate a batch, run this part.
 # However, due to the underlying implementation of converter gear, there are other ways available to run a batch:
