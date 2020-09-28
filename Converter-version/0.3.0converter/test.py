@@ -15,21 +15,9 @@ acquisition = fw.lookup('wandell/Graphics test/batchtest/batchtest/suburb_9-30_v
 inputs = {}
 config = {}
 # here 'tags' could be change to anything you like.
-job_id = gear.run(config=config, inputs=inputs, destination=acquisition, tags=['converter_0.3.3'])
+job_id = gear.run(config=config, inputs=inputs, destination=acquisition, tags=['converter_city3'])
 
-# 2. To simulate a batch, run this part.
-# However, due to the underlying implementation of converter gear, there are other ways available to run a batch:
-# Regardless of the fact that we are passing acquisitions list to propose a batch tests, the gear will only end up
-# receiving session objects that each acquisition belongs to. Therefore in fact when running a batch, it is multiple
-# sessions that passed to the gear, and no matter how much acquisitions that from one same session are in the passed
-# list, the result will always be the same. So here I guess, no matter what form taken, just pass a list that contains
-# some acquisitions to 'propose_batch', the program will still work and result in same output.
-session = fw.lookup('wandell/Graphics test/scenes/suburb')
-t1_acquisitions = session.acquisitions()
-proposal = gear.propose_batch(t1_acquisitions, config={})
-jobs = proposal.run()
-
-# 3. To run specific multiple acquisitions in an acquisition, use 'for' loop.
+# 2. To run specific multiple acquisitions in an acquisition, use 'for' loop.
 session = fw.lookup('wandell/Graphics test/scenes/suburb')
 acquisitions = session.acquisitions()
 inputs = {}
