@@ -219,6 +219,10 @@ try:
                     files.append(pbrt + '_' + i)
             if 'radiance' in pbrt_type:
                 files.append(pbrt)
+            elif 'No specific pbrt' in pbrt_type:
+                files.append(pbrt)
+                files.append(pbrt + '_mesh')
+                files.append(pbrt + '_depth')
 
             for file in files:
                 if os.path.exists('%s.pbrt' % file):
