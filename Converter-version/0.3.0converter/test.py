@@ -1,7 +1,7 @@
 import flywheel
 
 # Copy your id here.
-user_id = ''
+user_id = 'stanfordlabs.flywheel.io:v1PolPtR2GQrXSp7Jr'
 fw = flywheel.Client(user_id)
 
 # Get the Flywheel Example Utility gear
